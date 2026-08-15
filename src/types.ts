@@ -8,6 +8,7 @@ export type PageView =
   | 'about'
   | 'branding'
   | 'contact'
+  | 'wishlist'
   | 'not-found';
 
 export type Category = 'Vestidos' | 'Tops & Blusas' | 'Pantalones' | 'Accesorios' | 'Joyería';

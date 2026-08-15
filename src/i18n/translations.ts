@@ -37,6 +37,16 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     darkTheme: 'Modo Oscuro',
     freeShippingBanner: '✨ Envío Express Gratis en Cambrils & Tarragona en pedidos superiores a 50€.',
     
+    // Wishlist
+    wishlist: 'Lista de Deseos',
+    emptyWishlist: 'Tu lista de deseos está vacía',
+    emptyWishlistDesc: 'Guarda tus piezas favoritas de lino, moda sostenible y joyería artesanal para no perderlas de vista.',
+    addToWishlist: 'Añadir a Favoritos',
+    removeFromWishlist: 'Quitar de Favoritos',
+    addAllToCart: 'Añadir Todo a la Cesta',
+    clearWishlist: 'Vaciar Lista',
+    savedItems: 'Piezas Guardadas',
+    
     // Hero & Home
     heroTag: 'Boutique Cambrils',
     heroSubtag: 'Nueva Colección de Erika',
@@ -130,6 +140,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     lightTheme: 'Mode Clar',
     darkTheme: 'Mode Fosc',
     freeShippingBanner: '✨ Enviament Express Gratuït a Cambrils i Tarragona en comandes superiors a 50€.',
+    wishlist: 'Llista de Desitjos',
+    emptyWishlist: 'La teva llista de desitjos està buida',
+    emptyWishlistDesc: 'Guarda les teves peces preferides de lli, vestits i joiaria artesanal per tenir-les sempre a mà.',
+    addToWishlist: 'Guardar a Favorits',
+    removeFromWishlist: 'Treure de Favorits',
+    addAllToCart: 'Afegir Tot a la Cistella',
+    clearWishlist: 'Buidar Llista',
+    savedItems: 'Peces Guardades',
     
     // Hero & Home
     heroTag: 'Boutique Cambrils',
@@ -224,6 +242,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     lightTheme: 'Light Mode',
     darkTheme: 'Dark Mode',
     freeShippingBanner: '✨ Free Express Shipping in Cambrils & Tarragona on orders over €50.',
+    wishlist: 'Wishlist',
+    emptyWishlist: 'Your wishlist is empty',
+    emptyWishlistDesc: 'Save your favorite handcrafted linen pieces, dresses, and jewelry to keep them at hand.',
+    addToWishlist: 'Save to Wishlist',
+    removeFromWishlist: 'Remove from Wishlist',
+    addAllToCart: 'Add All to Bag',
+    clearWishlist: 'Clear Wishlist',
+    savedItems: 'Saved Pieces',
     
     // Hero & Home
     heroTag: 'Cambrils Boutique',
@@ -318,6 +344,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     lightTheme: 'Mode Clair',
     darkTheme: 'Mode Sombre',
     freeShippingBanner: '✨ Livraison Express Gratuite à Cambrils & Tarragone dès 50€ d\'achats.',
+    wishlist: 'Liste d\'Envies',
+    emptyWishlist: 'Votre liste d\'envies est vide',
+    emptyWishlistDesc: 'Enregistrez vos créations en lin et bijoux artisanaux préférés pour les retrouver à tout moment.',
+    addToWishlist: 'Enregistrer dans les Favoris',
+    removeFromWishlist: 'Retirer des Favoris',
+    addAllToCart: 'Tout Ajouter au Panier',
+    clearWishlist: 'Vider la Liste',
+    savedItems: 'Pièces Enregistrées',
     
     // Hero & Home
     heroTag: 'Boutique Cambrils',
@@ -412,6 +446,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     lightTheme: 'Heller Modus',
     darkTheme: 'Dunkler Modus',
     freeShippingBanner: '✨ Kostenloser Expressversand in Cambrils & Tarragona ab 50 € Bestellwert.',
+    wishlist: 'Wunschliste',
+    emptyWishlist: 'Ihre Wunschliste ist leer',
+    emptyWishlistDesc: 'Speichern Sie Ihre handgefertigten Lieblingsstücke aus Leinen und Schmuck, um sie immer griffbereit zu haben.',
+    addToWishlist: 'Auf die Wunschliste',
+    removeFromWishlist: 'Von der Wunschliste entfernen',
+    addAllToCart: 'Alles in den Warenkorb',
+    clearWishlist: 'Wunschliste leeren',
+    savedItems: 'Gespeicherte Artikel',
     
     // Hero & Home
     heroTag: 'Boutique Cambrils',

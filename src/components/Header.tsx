@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageView } from '../types';
 import { TripleMoonLogo } from './TripleMoonLogo';
-import { Search, ShoppingBag, Menu, X, ChevronDown, Sparkles, User, HardDrive } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, ChevronDown, Sparkles, User, HardDrive, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { ThemeDropdown, LanguageDropdown } from './ThemeLanguageDropdowns';
@@ -11,6 +11,7 @@ interface HeaderProps {
   currentView: PageView;
   setCurrentView: (view: PageView) => void;
   cartCount: number;
+  wishlistCount?: number;
   onOpenSearch: () => void;
   onOpenCart: () => void;
   onOpenDrive?: () => void;
@@ -27,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentView,
   setCurrentView,
   cartCount,
+  wishlistCount = 0,
   onOpenSearch,
   onOpenCart,
   onOpenDrive,

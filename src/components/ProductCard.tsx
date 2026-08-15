@@ -8,13 +8,17 @@ interface ProductCardProps {
   onSelect: (product: Product) => void;
   onQuickAdd: (product: Product) => void;
   isDarkMode: boolean;
+  isWishlisted?: boolean;
+  onToggleWishlist?: (product: Product) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onSelect,
   onQuickAdd,
-  isDarkMode
+  isDarkMode,
+  isWishlisted = false,
+  onToggleWishlist
 }) => {
   return (
     <motion.div
@@ -59,11 +63,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <button
           onClick={(e) => {
             e.stopPropagation();
+            if (onToggleWishlist) {
+              onToggleWishlist(product);
+            }
           }}
-          className="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md text-white/80 hover:text-rose-400 hover:bg-black/60 transition-colors z-10"
-          title="Guardar en favoritos"
+          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md transition-all duration-200 z-10 ${
+            isWishlisted
+              ? 'bg-rose-500 text-white shadow-md scale-105'
+              : 'bg-black/40 text-white/80 hover:text-rose-400 hover:bg-black/60 hover:scale-105'
+          }`}
+          title={isWishlisted ? 'Quitar de lista de deseos' : 'Guardar en lista de deseos'}
+          aria-label={isWishlisted ? 'Quitar de lista de deseos' : 'Guardar en lista de deseos'}
         >
-          <Heart className="w-4 h-4" />
+          <Heart className={`w-4 h-4 transition-transform ${isWishlisted ? 'fill-current scale-110' : ''}`} />
         </button>
 
         {/* Quick Action Overlay on Desktop */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Product, CartItem, PageView } from '../types';
 import { PRODUCTS } from '../data/products';
-import { ShoppingBag, MessageCircle, ChevronDown, Check, Ruler } from 'lucide-react';
+import { ShoppingBag, MessageCircle, ChevronDown, Check, Ruler, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { LanguageCode } from '../i18n/translations';
@@ -13,6 +13,8 @@ interface ProductDetailViewProps {
   setCurrentView: (view: PageView) => void;
   isDarkMode: boolean;
   language?: LanguageCode;
+  isWishlisted?: boolean;
+  onToggleWishlist?: (product: Product) => void;
 }
 
 export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
@@ -21,6 +23,8 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   onSelectProduct,
   setCurrentView,
   isDarkMode,
+  isWishlisted = false,
+  onToggleWishlist,
 }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || 'M');
@@ -89,7 +93,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           </div>
 
           {/* Main Selected Image */}
-          <div className="flex-1 aspect-[3/4] rounded-2xl overflow-hidden bg-slate-100 dark:bg-zinc-900 relative border border-slate-200 dark:border-zinc-800">
+          <div className="flex-1 aspect-[3/4] rounded-2xl overflow-hidden bg-slate-100 dark:bg-zinc-900 relative border border-slate-200 dark:border-zinc-800 group">
             <motion.img
               key={selectedImage}
               initial={{ opacity: 0.8 }}
@@ -99,6 +103,19 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               alt={product.name}
               className="w-full h-full object-cover object-center"
             />
+            {/* Wishlist Button in Image */}
+            <button
+              onClick={() => onToggleWishlist && onToggleWishlist(product)}
+              className={`absolute top-4 right-4 p-3 rounded-full backdrop-blur-md transition-all duration-200 shadow-md ${
+                isWishlisted
+                  ? 'bg-rose-500 text-white scale-105'
+                  : 'bg-black/40 text-white/80 hover:text-rose-400 hover:bg-black/60'
+              }`}
+              title={isWishlisted ? t('removeFromWishlist', 'Quitar de Favoritos') : t('addToWishlist', 'Guardar en Favoritos')}
+              aria-label={isWishlisted ? t('removeFromWishlist', 'Quitar de Favoritos') : t('addToWishlist', 'Guardar en Favoritos')}
+            >
+              <Heart className={`w-5 h-5 transition-transform ${isWishlisted ? 'fill-current scale-110' : ''}`} />
+            </button>
           </div>
 
         </div>
@@ -242,6 +259,19 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>{t('addToCart', 'Añadir a la Cesta')}</span>
+              </button>
+
+              <button
+                onClick={() => onToggleWishlist && onToggleWishlist(product)}
+                className={`h-12 w-12 rounded-xl border flex items-center justify-center transition-all shadow-sm ${
+                  isWishlisted
+                    ? 'bg-rose-500/10 border-rose-500 text-rose-600 dark:text-rose-400'
+                    : 'border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-rose-300 hover:text-rose-500'
+                }`}
+                title={isWishlisted ? t('removeFromWishlist', 'Quitar de Favoritos') : t('addToWishlist', 'Guardar en Favoritos')}
+                aria-label={isWishlisted ? t('removeFromWishlist', 'Quitar de Favoritos') : t('addToWishlist', 'Guardar en Favoritos')}
+              >
+                <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-rose-500 text-rose-500' : ''}`} />
               </button>
             </div>
 
