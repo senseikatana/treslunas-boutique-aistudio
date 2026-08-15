@@ -125,15 +125,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b border-slate-200 dark:border-zinc-800 pb-4 gap-4">
           <div>
             <span className="font-mono-label text-[#92003a] dark:text-[#c37b58] font-bold">{t('newArrivals', 'Novedades')}</span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-slate-900 dark:text-zinc-100 mt-1">
+            <h2 style={{ color: '#000000' }} className="font-serif text-3xl sm:text-4xl font-normal mt-1">
               {t('featuredProducts', 'Novedades Destacadas')}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1">{t('featuredSub', 'Selección exclusiva recién llegada a nuestra tienda física')}</p>
+            <p style={{ color: '#000000', fontWeight: 'bold' }} className="text-xs mt-1">{t('featuredSub', 'Selección exclusiva recién llegada a nuestra tienda física')}</p>
           </div>
 
           <button
+            style={{ color: '#000000' }}
             onClick={() => setCurrentView('collection')}
-            className="px-4 py-2 border border-slate-300 dark:border-zinc-700 text-slate-800 dark:text-zinc-200 font-mono-label text-[11px] font-bold uppercase rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+            className="px-4 py-2 border border-slate-300 dark:border-zinc-700 font-mono-label text-[11px] font-bold uppercase rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
           >
             {t('viewAllProducts', 'Ver Todos los Productos')}
           </button>
@@ -164,7 +165,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <h3 className="font-serif text-2xl sm:text-3xl font-normal mt-2">
               {t('artisanTitle', 'Hecho a mano con amor en Cambrils')}
             </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300 max-w-lg">
+            <p style={{ color: '#000000' }} className="text-xs sm:text-sm max-w-lg">
               {t('artisanDesc', 'Cada pieza de joyería y selección textil refleja nuestra devoción por el detalle y el respeto al medio ambiente.')}
             </p>
           </div>

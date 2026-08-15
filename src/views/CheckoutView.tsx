@@ -73,7 +73,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+
       {/* Title */}
       <div className="text-center space-y-2">
         <span className="font-mono-label text-[#92003a] dark:text-[#c37b58] font-bold">
@@ -94,11 +94,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+
         {/* Left Column: Shipping & Billing Details */}
-        <div className={`lg:col-span-6 p-6 sm:p-8 rounded-2xl border space-y-6 ${
-          isDarkMode ? 'bg-[#141416] border-zinc-800' : 'bg-white border-zinc-200'
-        }`}>
+        <div className={`lg:col-span-6 p-6 sm:p-8 rounded-2xl border space-y-6 ${isDarkMode ? 'bg-[#141416] border-zinc-800' : 'bg-white border-zinc-200'
+          }`}>
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <h2 className="font-serif font-bold text-xl text-[#92003a] dark:text-[#c37b58]">
               Datos de Envío y Facturación
@@ -118,11 +117,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   setFormError(null);
                 }}
                 placeholder="Nombre y Apellidos"
-                className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                  isDarkMode 
-                    ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                    ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                     : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                }`}
+                  }`}
               />
             </div>
 
@@ -137,11 +135,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   setFormError(null);
                 }}
                 placeholder="Calle, número, piso"
-                className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                  isDarkMode 
-                    ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                    ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                     : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                }`}
+                  }`}
               />
             </div>
 
@@ -154,11 +151,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                   placeholder="Cambrils, Reus, Tarragona..."
-                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                    isDarkMode 
-                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                       : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -169,11 +165,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   value={formData.postalCode}
                   onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                   placeholder="43850"
-                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                    isDarkMode 
-                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                       : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -190,11 +185,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                     setFormError(null);
                   }}
                   placeholder="email@ejemplo.com"
-                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                    isDarkMode 
-                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                       : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -205,11 +199,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   placeholder="+34 600 000 000"
-                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${
-                    isDarkMode 
-                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]' 
+                  className={`w-full px-4 py-3 rounded-lg border outline-none transition-all ${isDarkMode
+                      ? 'bg-zinc-900 border-zinc-700 text-white focus:border-[#92003a]'
                       : 'bg-zinc-50 border-zinc-300 text-zinc-900 focus:border-[#92003a]'
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -249,9 +242,8 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
         </div>
 
         {/* Right Column: Embedded Stripe Gateway */}
-        <div className={`lg:col-span-6 p-6 sm:p-8 rounded-2xl border space-y-5 ${
-          isDarkMode ? 'bg-[#141416] border-zinc-800' : 'bg-white border-zinc-200'
-        }`}>
+        <div className={`lg:col-span-6 p-6 sm:p-8 rounded-2xl border space-y-5 ${isDarkMode ? 'bg-[#141416] border-zinc-800' : 'bg-white border-zinc-200'
+          }`}>
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <h2 className="font-serif font-bold text-xl text-[#92003a] dark:text-[#c37b58]">
               Pasarela de Pago Integrada

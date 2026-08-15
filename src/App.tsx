@@ -39,7 +39,7 @@ export default function App() {
     try {
       const saved = localStorage.getItem('3lunas_theme_mode');
       if (saved === 'system' || saved === 'light' || saved === 'dark') return saved;
-    } catch (e) {}
+    } catch (e) { }
     return 'system';
   });
 
@@ -67,7 +67,7 @@ export default function App() {
       if (saved && ['es', 'cat', 'en', 'fr', 'de'].includes(saved)) {
         return saved as LanguageCode;
       }
-    } catch (e) {}
+    } catch (e) { }
     return 'es';
   });
 
@@ -87,7 +87,7 @@ export default function App() {
     try {
       const saved = localStorage.getItem('3lunas_last_order');
       if (saved) return JSON.parse(saved);
-    } catch (e) {}
+    } catch (e) { }
     return null;
   });
 
@@ -95,13 +95,13 @@ export default function App() {
   useEffect(() => {
     try {
       localStorage.setItem('3lunas_cart_v1', JSON.stringify(cartItems));
-    } catch (e) {}
+    } catch (e) { }
   }, [cartItems]);
 
   useEffect(() => {
     try {
       localStorage.setItem('3lunas_theme_mode', themeMode);
-    } catch (e) {}
+    } catch (e) { }
   }, [themeMode]);
 
   const { i18n } = useTranslation();
@@ -110,7 +110,7 @@ export default function App() {
     try {
       localStorage.setItem('3lunas_language', language);
       i18n.changeLanguage(language);
-    } catch (e) {}
+    } catch (e) { }
   }, [language, i18n]);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ export default function App() {
     if (lastOrder) {
       try {
         localStorage.setItem('3lunas_last_order', JSON.stringify(lastOrder));
-      } catch (e) {}
+      } catch (e) { }
     }
   }, [lastOrder]);
 
@@ -142,9 +142,9 @@ export default function App() {
   const handleAddToCart = (newItem: CartItem) => {
     setCartItems(prev => {
       const existingIdx = prev.findIndex(
-        i => i.product.id === newItem.product.id && 
-             i.selectedSize === newItem.selectedSize &&
-             i.selectedColor.name === newItem.selectedColor.name
+        i => i.product.id === newItem.product.id &&
+          i.selectedSize === newItem.selectedSize &&
+          i.selectedColor.name === newItem.selectedColor.name
       );
       if (existingIdx > -1) {
         const updated = [...prev];
@@ -217,164 +217,163 @@ export default function App() {
 
   return (
     <Elements stripe={stripePromise} options={stripeOptions} key={`${isDarkMode}-${Math.round(grandTotal * 100)}`}>
-      <div className={`min-h-screen flex flex-col relative transition-colors duration-300 ${
-        isDarkMode ? 'bg-zinc-950 text-zinc-100' : 'bg-slate-50 text-slate-900'
-      }`}>
-      {/* Sophisticated Dark Ambient Lighting Blurs */}
-      {isDarkMode && (
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] bg-blue-900/10 rounded-full blur-[120px]"></div>
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/10 rounded-full blur-[150px]"></div>
-          <div className="absolute top-[40%] right-[15%] w-[30%] h-[30%] bg-amber-900/5 rounded-full blur-[140px]"></div>
-        </div>
-      )}
-      
-      {/* Top Announcement Banner */}
-      <AnnouncementBanner
-        setCurrentView={setCurrentView}
-        onSelectCategory={setSelectedCategory}
-        language={language}
-      />
+      <div className={`min-h-screen flex flex-col relative transition-colors duration-300 ${isDarkMode ? 'bg-zinc-950 text-zinc-100' : 'bg-slate-50 text-slate-900'
+        }`}>
+        {/* Sophisticated Dark Ambient Lighting Blurs */}
+        {isDarkMode && (
+          <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[45%] h-[45%] bg-blue-900/10 rounded-full blur-[120px]"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/10 rounded-full blur-[150px]"></div>
+            <div className="absolute top-[40%] right-[15%] w-[30%] h-[30%] bg-amber-900/5 rounded-full blur-[140px]"></div>
+          </div>
+        )}
 
-      {/* Header */}
-      <Header
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        cartCount={totalCartCount}
-        onOpenSearch={() => setSearchOpen(true)}
-        onOpenCart={() => setCartDrawerOpen(true)}
-        isDarkMode={isDarkMode}
-        themeMode={themeMode}
-        setThemeMode={setThemeMode}
-        language={language}
-        setLanguage={setLanguage}
-        selectedCategory={selectedCategory}
-        onSelectCategory={(cat) => {
-          setSelectedCategory(cat);
-          setCurrentView('collection');
-        }}
-      />
+        {/* Top Announcement Banner */}
+        <AnnouncementBanner
+          setCurrentView={setCurrentView}
+          onSelectCategory={setSelectedCategory}
+          language={language}
+        />
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-x-hidden">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentView}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-          >
-            {currentView === 'home' && (
-              <HomeView
-                onSelectProduct={handleSelectProduct}
-                onQuickAdd={handleQuickAdd}
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-                language={language}
-              />
-            )}
+        {/* Header */}
+        <Header
+          currentView={currentView}
+          setCurrentView={setCurrentView}
+          cartCount={totalCartCount}
+          onOpenSearch={() => setSearchOpen(true)}
+          onOpenCart={() => setCartDrawerOpen(true)}
+          isDarkMode={isDarkMode}
+          themeMode={themeMode}
+          setThemeMode={setThemeMode}
+          language={language}
+          setLanguage={setLanguage}
+          selectedCategory={selectedCategory}
+          onSelectCategory={(cat) => {
+            setSelectedCategory(cat);
+            setCurrentView('collection');
+          }}
+        />
 
-            {currentView === 'collection' && (
-              <CollectionView
-                onSelectProduct={handleSelectProduct}
-                onQuickAdd={handleQuickAdd}
-                isDarkMode={isDarkMode}
-                language={language}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-            )}
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-x-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentView}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+            >
+              {currentView === 'home' && (
+                <HomeView
+                  onSelectProduct={handleSelectProduct}
+                  onQuickAdd={handleQuickAdd}
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                  language={language}
+                />
+              )}
 
-            {currentView === 'product-detail' && (
-              <ProductDetailView
-                product={selectedProduct}
-                onAddToCart={handleAddToCart}
-                onSelectProduct={handleSelectProduct}
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-                language={language}
-              />
-            )}
+              {currentView === 'collection' && (
+                <CollectionView
+                  onSelectProduct={handleSelectProduct}
+                  onQuickAdd={handleQuickAdd}
+                  isDarkMode={isDarkMode}
+                  language={language}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                />
+              )}
 
-            {currentView === 'cart' && (
-              <CartView
-                cartItems={cartItems}
-                onUpdateQuantity={handleUpdateQuantity}
-                onRemoveItem={handleRemoveItem}
-                onClearCart={handleClearCart}
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-                language={language}
-              />
-            )}
+              {currentView === 'product-detail' && (
+                <ProductDetailView
+                  product={selectedProduct}
+                  onAddToCart={handleAddToCart}
+                  onSelectProduct={handleSelectProduct}
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                  language={language}
+                />
+              )}
 
-            {currentView === 'checkout' && (
-              <CheckoutView
-                cartItems={cartItems}
-                onCompleteOrder={handleCompleteOrder}
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-              />
-            )}
+              {currentView === 'cart' && (
+                <CartView
+                  cartItems={cartItems}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  onRemoveItem={handleRemoveItem}
+                  onClearCart={handleClearCart}
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                  language={language}
+                />
+              )}
 
-            {currentView === 'order-success' && (
-              <OrderSuccessView
-                order={lastOrder}
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-              />
-            )}
+              {currentView === 'checkout' && (
+                <CheckoutView
+                  cartItems={cartItems}
+                  onCompleteOrder={handleCompleteOrder}
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                />
+              )}
 
-            {currentView === 'about' && (
-              <AboutView isDarkMode={isDarkMode} />
-            )}
+              {currentView === 'order-success' && (
+                <OrderSuccessView
+                  order={lastOrder}
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                />
+              )}
 
-            {currentView === 'branding' && (
-              <BrandingGuideView isDarkMode={isDarkMode} />
-            )}
+              {currentView === 'about' && (
+                <AboutView isDarkMode={isDarkMode} />
+              )}
 
-            {currentView === 'contact' && (
-              <ContactView isDarkMode={isDarkMode} />
-            )}
+              {currentView === 'branding' && (
+                <BrandingGuideView isDarkMode={isDarkMode} />
+              )}
 
-            {currentView === 'not-found' && (
-              <NotFoundView
-                setCurrentView={setCurrentView}
-                isDarkMode={isDarkMode}
-              />
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </main>
+              {currentView === 'contact' && (
+                <ContactView isDarkMode={isDarkMode} />
+              )}
 
-      {/* Footer */}
-      <Footer
-        setCurrentView={setCurrentView}
-        isDarkMode={isDarkMode}
-      />
+              {currentView === 'not-found' && (
+                <NotFoundView
+                  setCurrentView={setCurrentView}
+                  isDarkMode={isDarkMode}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </main>
 
-      {/* Overlays / Modals */}
-      <SearchModal
-        isOpen={searchOpen}
-        onClose={() => setSearchOpen(false)}
-        onSelectProduct={handleSelectProduct}
-        setCurrentView={setCurrentView}
-        isDarkMode={isDarkMode}
-      />
+        {/* Footer */}
+        <Footer
+          setCurrentView={setCurrentView}
+          isDarkMode={isDarkMode}
+        />
 
-      <CartDrawer
-        isOpen={cartDrawerOpen}
-        onClose={() => setCartDrawerOpen(false)}
-        cartItems={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onClearCart={handleClearCart}
-        setCurrentView={setCurrentView}
-        isDarkMode={isDarkMode}
-        language={language}
-      />
-    </div>
-  </Elements>
-);
+        {/* Overlays / Modals */}
+        <SearchModal
+          isOpen={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          onSelectProduct={handleSelectProduct}
+          setCurrentView={setCurrentView}
+          isDarkMode={isDarkMode}
+        />
+
+        <CartDrawer
+          isOpen={cartDrawerOpen}
+          onClose={() => setCartDrawerOpen(false)}
+          cartItems={cartItems}
+          onUpdateQuantity={handleUpdateQuantity}
+          onRemoveItem={handleRemoveItem}
+          onClearCart={handleClearCart}
+          setCurrentView={setCurrentView}
+          isDarkMode={isDarkMode}
+          language={language}
+        />
+      </div>
+    </Elements>
+  );
 }

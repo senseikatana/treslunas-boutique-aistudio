@@ -1,4 +1,4 @@
-export type PageView = 
+export type PageView =
   | 'home'
   | 'collection'
   | 'product-detail'
