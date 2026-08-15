@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Order, PageView } from '../types';
 import { TripleMoonLogo } from '../components/TripleMoonLogo';
 import { WebhookAuditLog } from '../components/WebhookAuditLog';
-import { CheckCircle2, MapPin, Package, ArrowRight, Download } from 'lucide-react';
+import { CheckCircle2, MapPin, Package, ArrowRight, Download, HardDrive, ExternalLink, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
+import { getGoogleAccessToken, signInWithGoogle, setGoogleAccessToken } from '../lib/firebase';
+import { exportReceiptToGoogleDrive } from '../services/driveService';
+import { saveOrderToFirestore, logDriveBackupToFirestore } from '../services/firestoreOrders';
+import { auth } from '../lib/firebase';
 
 interface OrderSuccessViewProps {
   order: Order | null;
@@ -16,6 +20,74 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
   setCurrentView,
   isDarkMode
 }) => {
+  const [isExportingDrive, setIsExportingDrive] = useState(false);
+  const [driveExportResult, setDriveExportResult] = useState<{ name: string; url?: string } | null>(null);
+  const [driveError, setDriveError] = useState<string | null>(null);
+
+  const handleExportToGoogleDrive = async () => {
+    if (!order) return;
+    setIsExportingDrive(true);
+    setDriveError(null);
+    try {
+      let token = getGoogleAccessToken();
+      if (!token) {
+        const signin = await signInWithGoogle();
+        token = signin.accessToken;
+        if (token) setGoogleAccessToken(token);
+      }
+
+      if (!token) {
+        throw new Error('Inicia sesión con Google para guardar el recibo en Drive.');
+      }
+
+      const receipt = await exportReceiptToGoogleDrive(token, {
+        orderId: order.id,
+        customerName: order.shipping.fullName,
+        customerEmail: order.shipping.email,
+        phone: order.shipping.phone,
+        address: order.shipping.address,
+        city: order.shipping.city,
+        postalCode: order.shipping.postalCode,
+        items: order.items.map(i => ({
+          name: i.product.name,
+          size: i.selectedSize,
+          color: i.selectedColor.name,
+          quantity: i.quantity,
+          price: i.product.price
+        })),
+        subtotal: order.subtotal,
+        shipping: order.shippingCost,
+        total: order.total,
+        paymentMethod: order.paymentMethod,
+        date: order.createdAt
+      });
+
+      // Also persist reference in Firestore
+      await saveOrderToFirestore(order, receipt.id);
+      if (auth.currentUser) {
+        await logDriveBackupToFirestore({
+          fileId: receipt.id,
+          fileName: receipt.name,
+          mimeType: receipt.mimeType,
+          userId: auth.currentUser.uid,
+          fileType: 'order_receipt',
+          webViewLink: receipt.webViewLink,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      setDriveExportResult({
+        name: receipt.name,
+        url: receipt.webViewLink
+      });
+    } catch (err: any) {
+      console.error('Google Drive receipt export error:', err);
+      setDriveError(err.message || 'No se pudo exportar a Google Drive.');
+    } finally {
+      setIsExportingDrive(false);
+    }
+  };
+
   if (!order) {
     return (
       <div className="py-20 text-center space-y-4">
@@ -96,12 +168,57 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
           <MapPin className="w-4 h-4 text-[#FFE185] shrink-0" />
           <span>Entrega programada para Cambrils / Tarragona: <strong>24 Horas</strong></span>
         </div>
+
+        {/* Google Drive Status Alert inside Order box */}
+        {driveExportResult && (
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-700 dark:text-emerald-300 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+              <span>Recibo guardado en Google Drive: <strong>{driveExportResult.name}</strong></span>
+            </div>
+            {driveExportResult.url && (
+              <a
+                href={driveExportResult.url}
+                target="_blank"
+                rel="noreferrer"
+                className="font-bold underline flex items-center gap-1 shrink-0"
+              >
+                <span>Ver en Drive</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+        )}
+
+        {driveError && (
+          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-700 dark:text-rose-300">
+            {driveError}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-4 pt-4">
         <button
+          onClick={handleExportToGoogleDrive}
+          disabled={isExportingDrive}
+          className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-600 to-[#c37b58] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:opacity-95 transition-opacity shadow-xs"
+        >
+          {isExportingDrive ? (
+            <>
+              <RefreshCw className="w-4 h-4 animate-spin" />
+              <span>Guardando en Drive...</span>
+            </>
+          ) : (
+            <>
+              <HardDrive className="w-4 h-4" />
+              <span>Guardar en Google Drive</span>
+            </>
+          )}
+        </button>
+
+        <button
           onClick={() => window.print()}
-          className="px-6 py-3 rounded border border-zinc-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-800 transition-colors"
+          className="px-6 py-3 rounded-xl border border-zinc-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-zinc-800 transition-colors"
         >
           <Download className="w-4 h-4" />
           <span>Descargar Recibo</span>
@@ -109,7 +226,7 @@ export const OrderSuccessView: React.FC<OrderSuccessViewProps> = ({
 
         <button
           onClick={() => setCurrentView('collection')}
-          className="px-6 py-3 rounded bg-[#92003a] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-[#b21b50] transition-colors"
+          className="px-6 py-3 rounded-xl bg-[#92003a] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-[#b21b50] transition-colors"
         >
           <span>Seguir Comprando</span>
           <ArrowRight className="w-4 h-4" />

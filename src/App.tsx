@@ -10,6 +10,8 @@ import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { CartDrawer } from './components/CartDrawer';
 import { AnnouncementBanner } from './components/AnnouncementBanner';
+import { GoogleDriveModal } from './components/GoogleDriveModal';
+import { saveOrderToFirestore } from './services/firestoreOrders';
 import { LanguageCode } from './i18n/translations';
 
 // Initialize Stripe JS SDK at top level
@@ -132,6 +134,7 @@ export default function App() {
   // Modals
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState<boolean>(false);
+  const [driveModalOpen, setDriveModalOpen] = useState<boolean>(false);
 
   // Scroll to top on view change
   useEffect(() => {
@@ -193,6 +196,7 @@ export default function App() {
   const handleCompleteOrder = (order: Order) => {
     setLastOrder(order);
     setCartItems([]);
+    saveOrderToFirestore(order).catch(e => console.warn('Order sync fallback:', e));
     setCurrentView('order-success');
   };
 
@@ -242,6 +246,7 @@ export default function App() {
           cartCount={totalCartCount}
           onOpenSearch={() => setSearchOpen(true)}
           onOpenCart={() => setCartDrawerOpen(true)}
+          onOpenDrive={() => setDriveModalOpen(true)}
           isDarkMode={isDarkMode}
           themeMode={themeMode}
           setThemeMode={setThemeMode}
@@ -372,6 +377,12 @@ export default function App() {
           setCurrentView={setCurrentView}
           isDarkMode={isDarkMode}
           language={language}
+        />
+
+        <GoogleDriveModal
+          isOpen={driveModalOpen}
+          onClose={() => setDriveModalOpen(false)}
+          isDarkMode={isDarkMode}
         />
       </div>
     </Elements>

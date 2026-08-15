@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Catch-all Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidUser(data) {
+      return data.userId is string && data.userId.size() <= 128 &&
+             data.email is string && data.email.size() <= 256 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 128)) &&
+             (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024)) &&
+             (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 64));
+    }
+
+    function isValidOrder(data) {
+      return data.orderId is string && data.orderId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.customerEmail is string && data.customerEmail.size() <= 256 &&
+             data.totalAmount is number &&
+             data.status is string && data.status.size() <= 64 &&
+             data.createdAt is string && data.createdAt.size() <= 64 &&
+             (!('customerName' in data) || (data.customerName is string && data.customerName.size() <= 128)) &&
+             (!('phone' in data) || (data.phone is string && data.phone.size() <= 32)) &&
+             (!('address' in data) || (data.address is string && data.address.size() <= 256)) &&
+             (!('city' in data) || (data.city is string && data.city.size() <= 128)) &&
+             (!('postalCode' in data) || (data.postalCode is string && data.postalCode.size() <= 32)) &&
+             (!('paymentMethod' in data) || (data.paymentMethod is string && data.paymentMethod.size() <= 64)) &&
+             (!('driveReceiptFileId' in data) || (data.driveReceiptFileId is string && data.driveReceiptFileId.size() <= 128));
+    }
+
+    function isValidDriveBackup(data) {
+      return data.fileId is string && data.fileId.size() <= 128 &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.fileName is string && data.fileName.size() <= 256 &&
+             data.createdAt is string && data.createdAt.size() <= 64 &&
+             (!('mimeType' in data) || (data.mimeType is string && data.mimeType.size() <= 128)) &&
+             (!('fileType' in data) || (data.fileType is string && data.fileType.size() <= 64)) &&
+             (!('webViewLink' in data) || (data.webViewLink is string && data.webViewLink.size() <= 1024));
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow get: if isSignedIn() && request.auth.uid == userId;
+      allow list: if false;
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId && incoming().userId == request.auth.uid && isValidUser(incoming());
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId && incoming().userId == existing().userId && isValidUser(incoming());
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Orders
+    match /orders/{orderId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(orderId) && incoming().userId == request.auth.uid && isValidOrder(incoming());
+      allow update: if isSignedIn() && isValidId(orderId) && resource.data.userId == request.auth.uid && incoming().userId == existing().userId && isValidOrder(incoming());
+      allow delete: if false;
+    }
+
+    // Google Drive Backups / Exports
+    match /drive_backups/{backupId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(backupId) && incoming().userId == request.auth.uid && isValidDriveBackup(incoming());
+      allow update: if isSignedIn() && isValidId(backupId) && resource.data.userId == request.auth.uid && incoming().userId == existing().userId && isValidDriveBackup(incoming());
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

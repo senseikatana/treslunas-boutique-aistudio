@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { PageView } from '../types';
 import { TripleMoonLogo } from './TripleMoonLogo';
-import { Search, ShoppingBag, Menu, X, ChevronDown, Sparkles, User } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, ChevronDown, Sparkles, User, HardDrive } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { ThemeDropdown, LanguageDropdown } from './ThemeLanguageDropdowns';
@@ -13,6 +13,7 @@ interface HeaderProps {
   cartCount: number;
   onOpenSearch: () => void;
   onOpenCart: () => void;
+  onOpenDrive?: () => void;
   isDarkMode: boolean;
   themeMode: 'system' | 'light' | 'dark';
   setThemeMode: (mode: 'system' | 'light' | 'dark') => void;
@@ -28,6 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
   cartCount,
   onOpenSearch,
   onOpenCart,
+  onOpenDrive,
   isDarkMode,
   themeMode,
   setThemeMode,
@@ -239,6 +241,16 @@ export const Header: React.FC<HeaderProps> = ({
               <Search className="w-5 h-5" />
             </button>
 
+            {/* Google Drive & Cloud Sync Button */}
+            <button
+              onClick={onOpenDrive}
+              className="p-2 rounded-xl hover:bg-zinc-500/10 transition-colors relative text-zinc-800 dark:text-zinc-200"
+              title="Google Drive & Firebase Cloud Sync"
+            >
+              <HardDrive className="w-5 h-5 text-[#c37b58]" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-950"></span>
+            </button>
+
             {/* Language Selector Dropdown */}
             <LanguageDropdown
               language={language}
@@ -325,6 +337,30 @@ export const Header: React.FC<HeaderProps> = ({
                     ) : (
                       <span className="text-[10px] font-mono-label uppercase text-zinc-400">Ver</span>
                     )}
+                  </button>
+
+                  {/* Google Drive & Cloud Sync Button */}
+                  <button
+                    onClick={() => {
+                      if (onOpenDrive) onOpenDrive();
+                      setMobileMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
+                      isDarkMode
+                        ? 'bg-zinc-900 border-zinc-800 text-zinc-100 hover:border-zinc-700'
+                        : 'bg-zinc-50 border-zinc-200 text-zinc-900 hover:bg-zinc-100 shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-amber-500/10 text-[#c37b58]">
+                        <HardDrive className="w-5 h-5" />
+                      </div>
+                      <div className="text-left">
+                        <span className="text-xs font-bold block">Google Drive & Cloud Sync</span>
+                        <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Recibos, catálogos y copias de seguridad</span>
+                      </div>
+                    </div>
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                   </button>
 
                   {/* Account Action Button */}

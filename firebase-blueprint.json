@@ -1,0 +1,156 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public profile details of boutique customers",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "userId",
+        "email"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Purchased orders placed by customers in the boutique",
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "customerEmail": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "customerName": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "address": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "postalCode": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "totalAmount": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "paymentMethod": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "driveReceiptFileId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "orderId",
+        "userId",
+        "customerEmail",
+        "totalAmount",
+        "status",
+        "createdAt"
+      ]
+    },
+    "DriveBackup": {
+      "title": "DriveBackup",
+      "description": "Log of synced or exported documents to Google Drive",
+      "type": "object",
+      "properties": {
+        "fileId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "fileName": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "mimeType": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "fileType": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "webViewLink": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "fileId",
+        "userId",
+        "fileName",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "#/entities/UserProfile",
+      "description": "User profile store for authenticated boutique shoppers"
+    },
+    "/orders/{orderId}": {
+      "schema": "#/entities/Order",
+      "description": "Customer purchase orders stored persistently"
+    },
+    "/drive_backups/{backupId}": {
+      "schema": "#/entities/DriveBackup",
+      "description": "Logs and links of files created or managed in Google Drive"
+    }
+  }
+}
